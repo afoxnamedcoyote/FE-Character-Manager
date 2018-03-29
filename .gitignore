@@ -1,0 +1,11 @@
+*.DS_Store
+.settings/
+*.project
+*.classpath
+
+character-manager/target/
+
+*.class
+*.jar
+
+*/fe_characters_data.json
