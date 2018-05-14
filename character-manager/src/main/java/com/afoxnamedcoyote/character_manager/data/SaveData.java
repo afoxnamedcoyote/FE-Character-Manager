@@ -1,4 +1,4 @@
-package com.afoxnamedcoyote.character_manager;
+package com.afoxnamedcoyote.character_manager.data;
 
 import java.util.ArrayList;
 

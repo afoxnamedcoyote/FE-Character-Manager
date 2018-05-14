@@ -3,26 +3,49 @@ package com.afoxnamedcoyote.command_line;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import com.afoxnamedcoyote.character_manager.SaveData;
-import com.afoxnamedcoyote.character_manager.FileIO;
+import com.afoxnamedcoyote.character_manager.data.*;
 
 public class MainLoop {
 	private Scanner reader;
+	private MetaData metaData;
 	private SaveData saveData;
 	private String[] userInput;
 	
 	public MainLoop(Scanner reader) {
 		this.reader = reader;
-		this.saveData = new SaveData();
 		this.userInput = new String[0];
+		
+		if (loadAndInitializeData()) {
+			run();
+		}
 	}
 	
-	public void run() {
+	private boolean loadAndInitializeData() {
+		try{
+			System.out.println("Loading system data...");
+			this.metaData = FileIO.loadMetaData();
+		} catch (FileNotFoundException i) {
+			System.out.println("System data not found!");
+			return false;
+		}
+		
+		try {
+			System.out.println("Loading save data...");
+			this.saveData = FileIO.loadDefault();
+		} catch (FileNotFoundException i) {
+			System.out.println("Save data not found! Generating new data...");
+			this.saveData = new SaveData();
+		}
+		
+		return true;
+	}
+	
+	private void run() {
 		while (true) {
 			System.out.println("\nWhat would you like to do? (Type 'help' for a list of commands)");
 			System.out.printf("\n=> ");
 
-			this.userInput = reader.nextLine().split(" ");
+			this.userInput = reader.nextLine().toLowerCase().split(" ");
 			
 			switch (userInput[0]) {
 			case "exit":
@@ -37,7 +60,7 @@ public class MainLoop {
 				loadFromFile();
 				break;
 			case "characters":
-				new CharactersLoop(reader, saveData.characters).run();
+				new CharactersLoop(reader, metaData, saveData.characters).run();
 				break;
 			default:
 				System.out.println("Sorry, but that's not a registered command.");

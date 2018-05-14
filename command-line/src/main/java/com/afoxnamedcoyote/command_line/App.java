@@ -7,7 +7,7 @@ public class App {
 		System.out.println("Welcome to the Fire Emblem Tabletop RPG Character Manager!");
 		Scanner reader = new Scanner(System.in);
 		
-		new MainLoop(reader).run();
+		new MainLoop(reader);
 		
 		reader.close();
 		System.out.println("Goodbye!");
